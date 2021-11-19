@@ -12,22 +12,20 @@
 
 ## 安装教程
 
-如果你是装过NVjdc 先看看后面1.2以前如何更新之1.2升级说明
-
 1拉源码
 国内
 ```
-git clone https://ghproxy.com/https://github.com/1767332988/nvjdcdocker.git /root/nolanjdc
+git clone https://ghproxy.com/https://github.com/btlanyan/nvjdc.git /root/nolanjdc
 ```
 国外
 ```
-git clone https://github.com/1767332988/nvjdcdocker.git /root/nolanjdc
+git clone https://github.com/btlanyan/nvjdc.git /root/nolanjdc
 ```
 
 
-2 拉取基础镜像以后不需要拉取镜像了 如果需要拉取我会通知
+2 拉取基础镜像
 ```
-docker pull 1767332988/nvjdc:1.4
+docker pull 10529459/lanyannvjdc:1.4
 ```
 
 3 执行命令
@@ -45,15 +43,48 @@ yum install wget unzip -y
 mkdir -p  Config && cd Config
 ```
 
-5下载config.json 配置文件 并且修改自己的配置 不能缺少
+5 将config.json文件修改为自己的配置 （拉取的源码里自带config.json文件，安装提示修改即可，下面的为原版文件）
 
 
-```
-wget -O Config.json  https://raw.githubusercontent.com/NolanHzy/nvjdc/main/Config.json
-```
-国内请使用
- ```
-wget -O Config.json   https://ghproxy.com/https://raw.githubusercontent.com/NolanHzy/nvjdc/main/Config.json
+```{
+  ///浏览器最多几个网页
+  "MaxTab": "4",
+  //网站标题
+  "Title": "NolanJDCloud",
+  //回收时间分钟 不填默认3分钟
+  "Closetime": "3",
+  //网站公告
+  "Announcement": "为提高账户的安全性，请关闭免密支付。",
+  ///开启打印等待日志卡短信验证登陆 可开启 拿到日志群里回复 默认不要填写
+  "Debug": "",
+  ///自动滑块次数5次 5次后手动滑块 可设置为0默认手动滑块
+  "AutoCaptchaCount": "5",
+  ///XDD PLUS Url  http://IP地址:端口/api/login/smslogin
+  "XDDurl": "",
+  ///xddToken
+  "XDDToken": "",
+  ///青龙配置  注意对接XDD 对接芝士 设置为"Config":[]
+  "Config": [
+    {
+      //序号必填从1 开始
+      "QLkey": 1,
+      //服务器名称
+      "QLName": "阿里云",
+      //青龙地址
+      "QLurl": "",
+      //青龙2,9 OpenApi Client ID
+      "QL_CLIENTID": "",
+      //青龙2,9 OpenApi Client Secret
+      "QL_SECRET": "",
+      //CK最大数量
+      "QL_CAPACITY": 40,
+      "QRurl": ""
+    }
+  ]
+ 
+}
+
+
 ```
 
 6 回到nolanjdc目录创建chromium文件夹并进入
@@ -85,9 +116,9 @@ cd  /root/nolanjdc
 10启动镜像
 
 ```
-sudo docker run   --name nolanjdc -p 5701:80 -d  -v  "$(pwd)":/app \
+sudo docker run   --name nolanjdc -p 5211:80 -d  -v  "$(pwd)":/app \
 -v /etc/localtime:/etc/localtime:ro \
--it --privileged=true  1767332988/nvjdc:1.4
+-it --privileged=true  10529459/lanyannvjdc:1.4
 ```
 
 11查看 日志 
@@ -95,64 +126,10 @@ sudo docker run   --name nolanjdc -p 5701:80 -d  -v  "$(pwd)":/app \
 ```
 docker logs -f nolanjdc 
 ```
-
-  
-
 出现 NETJDC  started 即可 
 
-
-## 1.2以前如何更新之1.2
-如果你是装过NVjdc 并且root下存在nolanjdc 文件夹
-
-并且你的浏览器和配置已经在/root/nolanjdc文件下了
-
-
-请你将你现有的/root/nolanjdc更换名称 如nolanjdcdb
-```
-mv /root/nolanjdc /root/nolanjdcdb
-```
-
-然后执行步骤一 拉取代码
-国内
-```
-git clone https://ghproxy.com/https://github.com/1767332988/nvjdcdocker.git /root/nolanjdc
-```
-国外
-```
-git clone https://github.com/1767332988/nvjdcdocker.git /root/nolanjdc
-```
-
-
-然后将刚刚更换名称文件夹 如nolanjdcdb中的 配置文件放到/root/nolanjdc/Config 文件夹中
-```
- cd /root/nolanjdc &&  mkdir -p  Config &&  mv /root/nolanjdcdb/Config.json /root/nolanjdc/Config/Config.json
-```
-
-将刚刚更换名称文件夹 如nolanjdcdb 中的浏览器所有文件放到/root/nolanjdc/.local-chromium/Linux-884014 文件夹中
-```
- cd /root/nolanjdc &&    mv /root/nolanjdcdb/.local-chromium /root/nolanjdc/.local-chromium
-```
-
-删除容器
-```
-docker rm -f nolanjdc 
-```
-然后从步骤9开始即可
-
-后续更新只需要按照下方代码更新即可
-
-
-## 更新
-
-```
-cd /root/nolanjdc
-```
-```
-docker stop nolanjdc
-```
-```
-git pull
-```
+浏览器输入你的服务器ip:5211即可访问，如果打不开检测一下有没有开启端口，确认开启了端口可以重启试试
+重启命令
 ```
 docker start nolanjdc
 ```

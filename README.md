@@ -21,7 +21,7 @@ git clone https://github.com/btlanyan/nvjdc.git /root/nolanjdc
 ```
 
 
-2 拉取基础镜像以后不需要拉取镜像了 如果需要拉取我会通知
+2 拉取基础镜像
 ```
 sudo docker pull 10529459/lanyannvjdc:1.4
 ```
